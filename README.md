@@ -1,17 +1,6 @@
-## My Project
+# Assaying Out-Of-Distribution Generalization in Transfer Learning
 
-TODO: Fill this README out!
+**The code will be released soon!**
 
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
-
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This project is licensed under the Apache-2.0 License.
+This will be the code accompanying [Wenzel et. al 2022, Assaying Out-of-distribution Generalization in Transfer Learning](https://arxiv.org/abs/2207.09239).
 
