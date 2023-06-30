@@ -1,0 +1,48 @@
+# Config file that shows how to evaluate corruptions with specific settings. Run via:
+# `PYTHONPATH=src python bin/run.py -m --config-dir config_files/examples --config-name example_corruption`
+
+defaults:
+  - inspector
+  - datasets: ???
+  - adaptation.dataset: ???
+  - corruption.datasets: ???
+  - model: timm_pretrained_resnet18
+  - evaluations:
+    - classification_accuracy
+  - schemas/evaluations/linf_apgd_dlr_auto_attack@evaluations.linf_apgd_dlr_auto_attack
+  - override corruption: imagenet_c_type
+  - override adaptation: finetune
+  - _self_
+
+evaluations:
+  linf_apgd_dlr_auto_attack:
+    attack_size: 1e-6
+    number_of_samples: 100
+    skip_corruption_datasets: True
+
+
+adaptation:
+  optimizer:
+    classname: Adam
+    defaults:
+      lr: 0.01
+  number_of_epochs: 0
+
+corruption:
+  corruption_types:
+    - "gaussian_noise"
+    - "brightness"
+  corruption_severities:
+    - 1
+    - 2
+  combine_corruption_types: True
+
+hydra:
+  sweeper:
+    params:
+      adaptation.dataset: S3DomainBed-PACS-sketch-train
+      datasets:
+        - S3DomainBed-PACS-cartoon-val
+      corruption.datasets:
+        - S3DomainBed-PACS-cartoon-val
+        - S3DomainBed-PACS-sketch-val

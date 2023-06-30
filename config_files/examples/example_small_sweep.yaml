@@ -1,0 +1,26 @@
+# Config file for a small example sweep which runs on one machine (not using ray). Run via:
+# `PYTHONPATH=src python bin/run.py -m --config-dir config_files/examples --config-name example_small_sweep`
+
+defaults:
+  - inspector
+  - datasets: S3DomainBed-PACS-cartoon
+  - adaptation.dataset: S3DomainBed-PACS-sketch
+  - model: timm_pretrained_resnet18
+  - evaluations: classification_accuracy
+  - override adaptation: finetune
+  - _self_
+
+# Train pipeline settings (??? mark parameters to sweep).
+adaptation:
+  optimizer:
+    classname: ???
+    defaults:
+      lr: ???
+  number_of_epochs: 1
+
+# Hydra sweeper settings.
+hydra:
+  sweeper:
+    params:
+      adaptation.optimizer.classname: Adam
+      adaptation.optimizer.defaults.lr: 1.0, 0.1

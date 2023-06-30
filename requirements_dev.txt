@@ -1,0 +1,9 @@
+-r requirements_runtime.txt
+black==22.8.0
+flake8==3.8.3
+isort==5.7.0
+ipython==7.28.0
+jupyter==1.0.0
+matplotlib==3.5.0
+pytest==6.2.5
+pytest-cov==3.0.0

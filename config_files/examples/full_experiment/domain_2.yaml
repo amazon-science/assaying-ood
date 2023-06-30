@@ -1,0 +1,64 @@
+# Config file for a full experiment sweep on two different domains. This file trains on the domain
+# `Wilds-fmow` and evaluates on all the corresponding OOD domains. It includes a hyperparameter
+# sweep over learning rate and number of epochs and evalutes multiple metrics, augmentation methods,
+# corruptions and subsampling methods (few-shot learning). Note that this larger experiment config
+# needs a few minutes to load and it starts many jobs. Run via:
+# `PYTHONPATH=src python bin/run.py -m --config-dir config_files/examples/full_experiment --config-name domain_2`
+
+defaults: 
+  - inspector
+  # ??? mark parameters to sweep.
+  - datasets: ???
+  - adaptation.dataset: ???
+  - adaptation.dataset.transformations.augmenter: ???
+  - corruption.datasets: ???
+  - model: ???
+  # Metrics to evaluate:
+  - evaluations:
+    - top_k_classificaton_accuracy  # Top-1, Top-5 and Top-10 accuracy.
+    - linf_apgd_dlr_auto_attacks   # Specific preconfigured adversarial attacks.
+    - expected_calibration_error
+    - negative_log_likelihood
+    - demographic_parity_inferred_groups  # Fairness metric.
+    - number_of_parameters
+  - override adaptation: finetune
+  - override corruption: imagenet_c_type  # Use ImageNet-C type corruptions.
+  - _self_
+
+# Train pipeline settings (??? mark parameters to sweep).
+adaptation:
+  optimizer:
+    classname: Adam
+    defaults:
+      lr: ???
+  number_of_epochs: ???
+  dataloader:
+    batch_size: 64
+    num_workers: 4
+# Test pipeline settings
+dataloader:
+  batch_size: 64
+  num_workers: 4
+
+# Sweeper.
+hydra:
+  sweeper:
+    params:
+      # --- Domain: fmow from the WILDS benchmark ---
+        # Adaptation datasets (including few-shot settings).
+      adaptation.dataset: S3Wilds-fmow-train, S3Wilds-fmow-train-fewshot-10, S3Wilds-fmow-train-fewshot-100
+      datasets:
+        # ID splits.
+        - S3Wilds-fmow-id_val
+        - S3Wilds-fmow-id_test
+        # OOD datasets.
+        - S3Wilds-fmow-ood_test
+      # Evaluate corruptions (only on ID test split).
+      corruption.datasets:
+        - S3Wilds-fmow-id_test
+      # Shared sweeps (the same for each domain).
+      adaptation.dataset.transformations.augmenter: identity, random_color, random_augment, augmix
+      adaptation.finetune_only_head: False, True
+      adaptation.optimizer.defaults.lr: 5e-4, 5e-5
+      adaptation.number_of_epochs: 10, 100
+      model: timm_pretrained_resnet50d, timm_pretrained_deit_base_distilled_patch16_224

@@ -1,0 +1,10 @@
+defaults:
+ - inspector
+ - model: mock
+ - schemas/datasets/InspectorDataset@datasets.dataset1
+ - presets/datasets/S3ImageNet1k-val@datasets.dataset1.dataset
+ - schemas/datasets/TransformationStack@datasets.dataset1.transformations
+ - evaluations: classification_accuracy
+ - _self_
+
+s3_output_path: s3://bucket/some/folder

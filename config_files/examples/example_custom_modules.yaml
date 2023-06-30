@@ -1,0 +1,23 @@
+# Config file for using custom modules defined by the user. The custom modules are defined in the
+# folder `custom_modules`. Run via:
+# export INSPECTOR_CUSTOM_MODULES_PATH=./custom_modules
+# `PYTHONPATH=src python bin/run.py --config-dir config_files/examples --config-name example_custom_modules`
+
+defaults:
+  - inspector
+  - datasets: S3DomainBed-PACS-cartoon
+  - adaptation.dataset: S3DomainBed-PACS-sketch
+  - model: fcnet
+  - evaluations:
+    - classification_accuracy
+    - custom_metric
+  - override adaptation: finetune
+  - override hydra/sweeper: advanced
+  - _self_
+
+adaptation:
+  optimizer:
+    classname: Adam
+    defaults:
+      lr: 0.01
+  number_of_epochs: 1

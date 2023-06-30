@@ -1,0 +1,18 @@
+defaults:
+ - inspector
+ - model: mock
+ - schemas/datasets/InspectorDataset@datasets.dataset1
+ - presets/datasets/S3ImageNet1k-val@datasets.dataset1.dataset
+ - schemas/datasets/TransformationStack@datasets.dataset1.transformations
+ - adaptation.dataset: S3TinyImageNetForTesting-fewshot-10
+ - evaluations: classification_accuracy
+ - _self_
+ - override adaptation: finetune
+
+datasets:
+  dataset1:
+    number_of_classes_per_attribute:
+      label_: 1000
+    default_attribute: "label_"
+
+s3_output_path: s3://bucket/some/folder

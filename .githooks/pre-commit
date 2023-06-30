@@ -1,0 +1,14 @@
+#!/bin/sh
+
+exec < /dev/tty
+
+while true; do
+    read -p "Have you executed the script './local_test_check.sh'? [yes/no]: " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit 1;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+exec <&-

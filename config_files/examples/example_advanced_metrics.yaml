@@ -1,0 +1,18 @@
+# Config file which shows how advanced configurations of metrics can be constructed.
+# It can be called by executing the following command:
+# `PYTHONPATH=src python bin/run.py --config-dir config_files/examples --config-name advanced_metrics`
+
+defaults:
+  - inspector
+  - datasets: S3ImageNet1k-val
+  - model: timm_pretrained_resnet50
+  - schemas/evaluations/classification_accuracy@evaluations.my_acc1
+  - schemas/evaluations/classification_accuracy@evaluations.my_acc5
+  - _self_
+
+evaluations:
+  my_acc1:
+    top_k: 1
+  my_acc5:
+    top_k: 5
+s3_output_path: s3://bucket/some/folder

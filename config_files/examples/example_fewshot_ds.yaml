@@ -1,0 +1,24 @@
+# Config file that shows advanced configurations for evaluating on fewshot datasets. Run via:
+# `PYTHONPATH=src python bin/run.py -m --config-dir config_files/examples --config-name example_fewshot_ds`
+
+defaults:
+ - inspector
+ - model: timm_pretrained_vgg11
+ - schemas/datasets/InspectorDataset@datasets.dataset1
+ - schemas/datasets/FewshotSubsampledDataset@datasets.dataset1.dataset
+ - presets/datasets/S3ImageNet1k-val@datasets.dataset1.dataset.dataset
+ - schemas/datasets/EvaluationTransformationStack@datasets.dataset1.transformations
+ - evaluations: classification_accuracy
+ - _self_
+
+datasets:
+  dataset1:
+    dataset:
+      target_attribute: "label_"
+      number_of_classes_per_attribute:
+        label_: 1
+      number_datapoints_per_class: 1
+      force_create: True
+    number_of_classes_per_attribute:
+      label_: 1
+    default_attribute: "label_"

@@ -1,0 +1,9 @@
+sphinx==5.3.0
+sphinx_mdinclude==0.4.0
+sphinxemoji==0.2.0
+nbsphinx==0.9.2
+sphinx-rtd-theme==1.2.2
+# jinja 3.0.3 for compatibility with nbconvert. See
+# https://github.com/sphinx-doc/sphinx/issues/10289
+# Remove when using more recent versions of previous packages.
+jinja2==3.0.3
